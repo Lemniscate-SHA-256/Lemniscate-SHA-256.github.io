@@ -107,15 +107,26 @@ body {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
+/* Enhanced dark mode */
 body.dark-mode {
-    --primary: #ffffff;
-    --secondary: #0f0f0f;
-    background: #0f0f0f;
-}
-
-body.dark-mode .work-card {
-    background: #1a1a1a;
-    border: 1px solid #333;
+    --primary: #f5f5f5;
+    --secondary: #1a1a1a;
+    background: #0a0a0a;
+    
+    .work-card {
+        background: #121212;
+        border: 1px solid #2a2a2a;
+    }
+    
+    .card-back {
+        background: #181818;
+        color: #e5e5e5;
+    }
+    
+    .modal {
+        background: #1a1a1a;
+        color: #f5f5f5;
+    }
 }
 
 /* Mobile Navigation */
@@ -219,6 +230,9 @@ body.fade-out {
     height: 100%;
     transition: transform 0.6s;
     transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    height: 100%;
 }
 
 .card-inner:hover {
@@ -238,4 +252,61 @@ body.fade-out {
     background: white;
     transform: rotateY(180deg);
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Mobile-friendly tap interaction */
+@media (hover: hover) {
+    .card-inner:hover {
+        transform: rotateY(180deg);
+    }
+}
+
+.card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+:root {
+    --text-base: 1rem;
+    --text-scale: 1.25;
+    
+    @media (min-width: 768px) {
+        --text-base: 1.125rem;
+    }
+}
+
+body {
+    font-size: var(--text-base);
+    line-height: 1.6;
+}
+
+h2 { font-size: calc(var(--text-base) * var(--text-scale) * 2); }
+h3 { font-size: calc(var(--text-base) * var(--text-scale) * 1.5); }
+
+/* Add subtle animations */
+.filter-btn {
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+}
+
+.modal-close {
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes cardReveal {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.work-card {
+    animation: cardReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 30%;
 }

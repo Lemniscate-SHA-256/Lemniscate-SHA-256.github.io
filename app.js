@@ -23,6 +23,7 @@ const projects = [
 
 
 // Fix misplaced dataset assignment
+// Projects Images Displays
 function renderProjects() {
     const grid = document.querySelector('.work-grid');
     
@@ -34,7 +35,15 @@ function renderProjects() {
         card.innerHTML = `
                     <div class="card-inner">
                         <div class="card-front">
-                            <img src="${project.image}" class="work-image" alt="${project.title}">
+                            <img src="${project.image}" 
+                                class="work-image" 
+                                alt="${project.title}
+                                loading="lazy"
+                                decoding="async"
+                                width="300"
+                                height="400"
+                                srcset="${project.image} 1x, ${project.image} 2x"
+                                sizes="(max-width: 600px) 100vw, 50vw">
                             <div class="card-overlay">
                                 <h3>${project.title}</h3>
                                 <p>View Details →</p>
@@ -51,45 +60,40 @@ function renderProjects() {
     });
 };
 
-
+// FIlter Logic
+// Update app.js filtering logic
 document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => 
-            btn.classList.remove('active'));
-        
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        // Get filter value
         const filter = button.dataset.filter;
-        
-        // Filter projects
         const cards = document.querySelectorAll('.work-card');
+        
         cards.forEach(card => {
-            const categories = card.dataset.category?.split(' ') || [];
-            if (filter === 'all' || categories.includes(filter)) {
-                card.style.display = 'block';
-                card.classList.add('animate-in');
-            } else {
-                card.style.display = 'none';
-            }
+            const categories = card.dataset.category.toLowerCase().split(' ');
+            const match = filter === 'all' || categories.includes(filter.toLowerCase());
+            
+            card.style.display = match ? 'grid' : 'none';
+            card.style.animation = match ? 'fadeInUp 0.6s ease-out' : 'none';
         });
     });
 });
 
-
+// Modal System
 document.querySelectorAll('.work-card').forEach(card => {
-    card.addEventListener('click', () => {
-        const title = card.querySelector('h2').innerText;
+    card.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) return; // Only on mobile
+        
+        const project = projects.find(p => 
+            p.title === card.querySelector('h3').textContent
+        );
+        
         const content = `
-            <h2>${title}</h2>
-            <img src="project.jpg" 
-                loading="lazy" 
-                alt="Project Name"
-                width="600"
-                height="400" src="${card.querySelector('img').src}" class="modal-image">
-            <p>Detailed project description...</p>
+            <h2>${project.title}</h2>
+            <div class="modal-meta">
+                <span class="year">${project.year}</span>
+                <div class="tags">${project.tech.map(t => `<span>${t}</span>`).join('')}</div>
+            </div>
+            <img src="${project.image}" alt="${project.title}" class="modal-image">
+            <p>${project.description}</p>
         `;
         
         document.querySelector('.modal-content').innerHTML = content;
@@ -158,5 +162,58 @@ document.querySelectorAll('.mobile-menu a').forEach(link => {
     });
 });
 
+// Card Flip Functionality
+document.querySelectorAll('.work-card').forEach(card => {
+    const inner = card.querySelector('.card-inner');
+    const closeBtn = card.querySelector('.close-details');
+    
+    inner.addEventListener('click', (e) => {
+        if (!e.target.closest('.close-details')) {
+            inner.classList.toggle('flipped');
+        }
+    });
+    
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        inner.classList.remove('flipped');
+    });
+});
+
+// View Transitions API
+document.addEventListener('astro:page-load', () => {
+    if (!document.startViewTransition) return;
+    
+    document.startViewTransition(() => {
+        // Update DOM here
+    });
+});
+
+// Schema Markup
+function addSchemaMarkup() {
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": projects.map((project, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+                "@type": "CreativeWork",
+                "name": project.title,
+                "description": project.description,
+                "dateCreated": project.year
+            }
+        }))
+    };
+    
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+}
+
+
 // Initialize
-document.addEventListener('DOMContentLoaded', renderProjects);
+document.addEventListener('DOMContentLoaded', () => {
+    renderProjects();
+    addSchemaMarkup();
+});
