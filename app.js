@@ -1,35 +1,56 @@
 // app.js
 const projects = [
     {
-        title: "E-commerce Platform",
-        category: ["web", "design"],
+        title: "Dissect",
+        category: ["Algorithm", "Visualization", "Flow-charting", "Education"],
+        description: "An educational tool for visualizing algorithms and flowcharts.",
+        tech: ["Python", "JavaScript", "D3.js"],
         image: "project1.jpg",
         url: "#",
-        year: "2023"
+        year: "2025"
     },
     // Add more projects
-];
 
+    {   title: "Robust Lambda", 
+        category: ["Lambda Calculus", "Programming Language", "Functional Programming", "Education"],
+        description: "A simple programming language based on Lambda Calculus.",
+        tech: ["Python", "tree-sitter"],
+        image: "project2.jpg",
+        url: "#",
+        year: "2025"
+    },
+
+
+
+// Fix misplaced dataset assignment
 function renderProjects() {
     const grid = document.querySelector('.work-grid');
-    card.dataset.category = project.category.join(' '); 
     
     projects.forEach(project => {
         const card = document.createElement('article');
         card.className = `work-card`;
+        // Add data-category attribute here
+        card.dataset.category = project.category.join(' ');
         card.innerHTML = `
-            <img src="${project.image}" class="work-image" alt="${project.title}">
-            <div class="work-content">
-                <span class="year">${project.year}</span>
-                <h2>${project.title}</h2>
-                <div class="tags">
-                    ${project.category.map(tag => `<span>${tag}</span>`).join('')}
-                </div>
-            </div>
-        `;
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="${project.image}" class="work-image" alt="${project.title}">
+                            <div class="card-overlay">
+                                <h3>${project.title}</h3>
+                                <p>View Details →</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <h3>${project.title}</h3>
+                            <p>${project.description}</p>
+                            <button class="close-details">×</button>
+                        </div>
+                    </div>
+                `;
         grid.appendChild(card);
     });
-}
+};
+
 
 document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', () => {
@@ -46,7 +67,7 @@ document.querySelectorAll('.filter-btn').forEach(button => {
         // Filter projects
         const cards = document.querySelectorAll('.work-card');
         cards.forEach(card => {
-            const categories = card.dataset.category.split(' ');
+            const categories = card.dataset.category?.split(' ') || [];
             if (filter === 'all' || categories.includes(filter)) {
                 card.style.display = 'block';
                 card.classList.add('animate-in');
@@ -63,7 +84,11 @@ document.querySelectorAll('.work-card').forEach(card => {
         const title = card.querySelector('h2').innerText;
         const content = `
             <h2>${title}</h2>
-            <img src="${card.querySelector('img').src}" class="modal-image">
+            <img src="project.jpg" 
+                loading="lazy" 
+                alt="Project Name"
+                width="600"
+                height="400" src="${card.querySelector('img').src}" class="modal-image">
             <p>Detailed project description...</p>
         `;
         
@@ -123,6 +148,14 @@ document.querySelectorAll('a').forEach(link => {
             }, 600);
         });
     }
+});
+
+// Add to mobile menu links
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+    });
 });
 
 // Initialize
