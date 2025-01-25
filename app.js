@@ -12,6 +12,7 @@ const projects = [
 
 function renderProjects() {
     const grid = document.querySelector('.work-grid');
+    card.dataset.category = project.category.join(' '); 
     
     projects.forEach(project => {
         const card = document.createElement('article');
@@ -90,6 +91,39 @@ darkModeToggle.addEventListener('click', () => {
 if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark-mode');
 }
+
+// Mobile menu toggle
+const hamburger = document.querySelector('.hamburger');
+const mobileMenu = document.querySelector('.mobile-menu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+});
+
+// Close menu on click outside
+document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+    }
+});
+
+// Add this to app.js
+document.querySelectorAll('a').forEach(link => {
+    if (link.href.includes(window.location.origin)) {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const overlay = document.createElement('div');
+            overlay.className = 'transition-overlay active';
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => {
+                window.location.href = link.href;
+            }, 600);
+        });
+    }
+});
 
 // Initialize
 document.addEventListener('DOMContentLoaded', renderProjects);

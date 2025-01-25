@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Your Name</title>
+    <title>Lemniscate-SHA-256</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<div class="modal-overlay">
-    <div class="modal">
-        <button class="modal-close">&times;</button>
-        <div class="modal-content"></div>
-    </div>
-</div>
+
 <body>
+    <div class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-content"></div>
+        </div>
+    </div>
     <header class="header">
         <nav class="nav">
             <a href="/" class="logo">Your Brand</a>
@@ -24,7 +25,18 @@
             </div>
         </nav>
     </header>
-
+    <nav class="mobile-nav">
+        <button class="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-menu">
+            <a href="/work">Work</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </nav>
     <main class="container">
         <div class="filters">
             <button class="filter-btn active" data-filter="all">All</button>
