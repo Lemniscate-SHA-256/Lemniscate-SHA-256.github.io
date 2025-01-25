@@ -19,7 +19,7 @@ const projects = [
         url: "#",
         year: "2025"
     },
-
+];
 
 
 // Fix misplaced dataset assignment
