@@ -1,1 +1,0 @@
-# N-Polymath-s-Blog
