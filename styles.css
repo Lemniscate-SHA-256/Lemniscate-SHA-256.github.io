@@ -310,3 +310,37 @@ h3 { font-size: calc(var(--text-base) * var(--text-scale) * 1.5); }
     animation-timeline: view();
     animation-range: entry 20% cover 30%;
 }
+
+.contact-section {
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: var(--secondary);
+    border-radius: 12px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+button[type="submit"] {
+    background: var(--accent);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+}

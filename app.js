@@ -36,11 +36,11 @@ function renderProjects() {
                     <div class="card-inner">
                         <div class="card-front">
                             <img src="${project.image}" 
-                                class="work-image" 
+                                class="work-image lazy" 
                                 alt="${project.title}
                                 loading="lazy"
                                 decoding="async"
-                                width="300"
+                                width="600"
                                 height="400"
                                 srcset="${project.image} 1x, ${project.image} 2x"
                                 sizes="(max-width: 600px) 100vw, 50vw">
@@ -210,6 +210,36 @@ function addSchemaMarkup() {
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
 }
+
+// Image lazy loading
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            observer.unobserve(img);
+        }
+    });
+});
+
+document.querySelectorAll('img[data-src]').forEach(img => {
+    observer.observe(img);
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+document.querySelectorAll('.work-card').forEach((card, i) => {
+    gsap.from(card, {
+        scrollTrigger: {
+            trigger: card,
+            start: "top 80%"
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        delay: i * 0.1
+    });
+});
 
 
 // Initialize
